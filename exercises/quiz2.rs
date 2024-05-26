@@ -1,6 +1,6 @@
 // quiz2.rs
 //
-// This is a quiz for the following sections:
+// This is a quiz for the following sections: 小测验
 // - Strings
 // - Vecs
 // - Move semantics
@@ -17,10 +17,15 @@
 // - The input is going to be a Vector of a 2-length tuple,
 //   the first element is the string, the second one is the command.
 // - The output element is going to be a Vector of strings.
+// 输入：字符串和命令列表。命令决定要应用于字符串的操作。它可以是：
+// - 将字符串大写
+// - 修剪字符串
+// - 将 "bar" 附加到字符串指定次数
+// 输入/输出的具体格式：
+// - 长度为2的元组向量，第一个元素是字符串，第二个元素是命令。
+// - 输出元素是一个字符串向量
 //
 // No hints this time!
-
-// I AM NOT DONE
 
 pub enum Command {
     Uppercase,
@@ -32,11 +37,22 @@ mod my_module {
     use super::Command;
 
     // TODO: Complete the function signature!
-    pub fn transformer(input: ???) -> ??? {
+    pub fn transformer(input: Vec<(String, Command)>) -> Vec<String> {
         // TODO: Complete the output declaration!
-        let mut output: ??? = vec![];
+        let mut output: Vec<String> = vec![];
         for (string, command) in input.iter() {
             // TODO: Complete the function body. You can do it!
+            match command {
+                Command::Uppercase => output.push(string.to_uppercase()),
+                Command::Trim => output.push(string.trim().to_owned()),
+                Command::Append(count) => {
+                    let mut s = string.to_owned();
+                    for _i in 0..*count {
+                        s.push_str("bar")
+                    }
+                    output.push(s)
+                }
+            }
         }
         output
     }
@@ -45,7 +61,7 @@ mod my_module {
 #[cfg(test)]
 mod tests {
     // TODO: What do we need to import to have `transformer` in scope?
-    use ???;
+    use super::my_module::*;
     use super::Command;
 
     #[test]
