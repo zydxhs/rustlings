@@ -7,11 +7,12 @@
 // functionality using iterators. Try not to use imperative loops (for, while).
 // Only the two iterator methods (count_iterator and count_collection_iterator)
 // need to be modified.
+// HashMap 存储给定进度(Progress)的练习次数。哈希表 k/v 分别表示练习的名称和进度。
+// 不要使用命令式循环(for/while)，只需要修改 count_iterator 和 count_collection_iterator 即可。
 //
 // Execute `rustlings hint iterators5` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
 use std::collections::HashMap;
 
@@ -35,7 +36,7 @@ fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
 fn count_iterator(map: &HashMap<String, Progress>, value: Progress) -> usize {
     // map is a hashmap with String keys and Progress values.
     // map = { "variables1": Complete, "from_str": None, ... }
-    todo!();
+	map.iter().fold(0,|acc,(k,v)|{if *v== value{acc+1}else{acc}})
 }
 
 fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
@@ -54,7 +55,10 @@ fn count_collection_iterator(collection: &[HashMap<String, Progress>], value: Pr
     // collection is a slice of hashmaps.
     // collection = [{ "variables1": Complete, "from_str": None, ... },
     //     { "variables2": Complete, ... }, ... ]
-    todo!();
+	    collection
+        .iter()
+        .map(|map| count_iterator(map, value))
+        .fold(0, |acc, v| acc + v)
 }
 
 #[cfg(test)]

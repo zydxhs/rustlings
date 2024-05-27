@@ -5,11 +5,11 @@
 // error content, instead of printing it out or propagating it further. Here, we
 // define a custom error type to make it possible for callers to decide what to
 // do next when our function returns an error.
+// 对于库代码，不建议使用 Box<dyn error::Error>，因为调用方可能希望根据错误内容做出不同的处理决定，而不是打印或传播。
+// 本课程定义了一个自定义的错误类型。
 //
 // Execute `rustlings hint errors6` or use the `hint` watch subcommand for a
 // hint.
-
-// I AM NOT DONE
 
 use std::num::ParseIntError;
 
@@ -25,13 +25,15 @@ impl ParsePosNonzeroError {
         ParsePosNonzeroError::Creation(err)
     }
     // TODO: add another error conversion function here.
-    // fn from_parseint...
+    fn from_parseint(err: ParseIntError) -> ParsePosNonzeroError {
+        ParsePosNonzeroError::ParseInt(err)
+    }
 }
 
 fn parse_pos_nonzero(s: &str) -> Result<PositiveNonzeroInteger, ParsePosNonzeroError> {
     // TODO: change this to return an appropriate error instead of panicking
     // when `parse()` returns an error.
-    let x: i64 = s.parse().unwrap();
+    let x: i64 = s.parse().map_err(ParsePosNonzeroError::from_parseint)?;
     PositiveNonzeroInteger::new(x).map_err(ParsePosNonzeroError::from_creation)
 }
 
