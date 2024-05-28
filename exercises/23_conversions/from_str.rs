@@ -5,6 +5,8 @@
 // implementing FromStr, you can use the `parse` method on strings to generate
 // an object of the implementor type. You can read more about it at
 // https://doc.rust-lang.org/std/str/trait.FromStr.html
+// 这与 from_into.rs 类似，但这次我们将实现“FromStr”并返回错误，而不是返回到默认值。
+// 此外，在实现FromStr时，可以对字符串使用“parse”方法来生成实现器类型的对象。
 //
 // Execute `rustlings hint from_str` or use the `hint` watch subcommand for a
 // hint.
@@ -31,8 +33,6 @@ enum ParsePersonError {
     ParseInt(ParseIntError),
 }
 
-// I AM NOT DONE
-
 // Steps:
 // 1. If the length of the provided string is 0, an error should be returned
 // 2. Split the given string on the commas present in it
@@ -48,6 +48,23 @@ enum ParsePersonError {
 impl FromStr for Person {
     type Err = ParsePersonError;
     fn from_str(s: &str) -> Result<Person, Self::Err> {
+        if s == "" {
+            return Err(ParsePersonError::Empty);
+        }
+        let ss = s.split(",").collect::<Vec<_>>();
+        if ss[0] == "" {
+            return Err(ParsePersonError::NoName);
+        }
+        if ss.len() != 2 {
+            return Err(ParsePersonError::BadLen);
+        }
+        match ss[1].parse::<usize>() {
+            Ok(age) => Ok(Person {
+                name: ss[0].to_string(),
+                age: age,
+            }),
+            Err(e) => Err(ParsePersonError::ParseInt(e)),
+        }
     }
 }
 

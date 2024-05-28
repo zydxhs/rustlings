@@ -3,6 +3,7 @@
 // The From trait is used for value-to-value conversions. If From is implemented
 // correctly for a type, the Into trait should work conversely. You can read
 // more about it at https://doc.rust-lang.org/std/convert/trait.From.html
+// From特质用于值到值的转换。如果对类型正确地实现了From，Into特质应该反过来工作。
 //
 // Execute `rustlings hint from_into` or use the `hint` watch subcommand for a
 // hint.
@@ -24,7 +25,6 @@ impl Default for Person {
     }
 }
 
-
 // Your task is to complete this implementation in order for the line `let p1 =
 // Person::from("Mark,20")` to compile. Please note that you'll need to parse the
 // age component into a `usize` with something like `"4".parse::<usize>()`. The
@@ -41,10 +41,37 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of
 // Person Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
-
 impl From<&str> for Person {
-    fn from(s: &str) -> Person {}
+    fn from(s: &str) -> Person {
+        if s == "" {
+            return Person::default();
+        }
+        let ss = s.split(",").collect::<Vec<_>>();
+        if ss.len() == 2 && ss[0] != "" {
+            if let Ok(age) = ss[1].parse::<usize>() {
+                return Person {
+                    name: ss[0].to_string(),
+                    age: age,
+                };
+            }
+        }
+        // if ss.len() == 2 {
+        //     if ss[0] == "" {
+        //         return Person::default();
+        //     } else if let Ok(age) = ss[1].parse::<usize>() {
+        //         return Person {
+        //             name: ss[0].to_string(),
+        //             age: age,
+        //         };
+        //     } else {
+        //         return Person::default();
+        //     }
+        // }
+        // if ss.len() == 1 {
+        //     return Person::default();
+        // }
+        return Person::default();
+    }
 }
 
 fn main() {

@@ -5,14 +5,14 @@
 // borrowed data, and clone the data lazily when mutation or ownership is
 // required. The type is designed to work with general borrowed data via the
 // Borrow trait.
+// 本练习探讨 Cow/写时克隆 类型。Cow是写时克隆智能指针。
+// 它可以封装并提供对借用数据的不可变访问，并在需要突变或所有权时惰性地克隆数据。该类型设计用于通过Borrow特性处理一般借用的数据。
 //
 // This exercise is meant to show you what to expect when passing data to Cow.
 // Fix the unit tests by checking for Cow::Owned(_) and Cow::Borrowed(_) at the
 // TODO markers.
 //
 // Execute `rustlings hint cow1` or use the `hint` watch subcommand for a hint.
-
-// I AM NOT DONE
 
 use std::borrow::Cow;
 
@@ -49,6 +49,8 @@ mod tests {
         let mut input = Cow::from(&slice[..]);
         match abs_all(&mut input) {
             // TODO
+            Cow::Borrowed(_) => Ok(()),
+            _ => Err("system"),
         }
     }
 
@@ -61,6 +63,8 @@ mod tests {
         let mut input = Cow::from(slice);
         match abs_all(&mut input) {
             // TODO
+            Cow::Owned(_) => Ok(()),
+            _ => Err("ss"),
         }
     }
 
@@ -73,6 +77,8 @@ mod tests {
         let mut input = Cow::from(slice);
         match abs_all(&mut input) {
             // TODO
+            Cow::Owned(_) => Ok(()),
+            _ => Err("ss"),
         }
     }
 }
